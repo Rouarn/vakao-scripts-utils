@@ -61,6 +61,9 @@
   "bugs": {
     "url": "https://github.com/vakao-ui/scripts-utils/issues"
   },
+  "publishConfig": {
+    "registry": "https://packages.aliyun.com/676d377c721f4dc7be6ca65a/npm/npm-registry/"
+  },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
     "@types/node": "^20.11.30",
