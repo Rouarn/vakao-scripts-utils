@@ -2,6 +2,18 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)；`0.0.x` 阶段仍会有对外 API 收敛。
 
+## [0.0.4] - 2026-11-21
+
+### 文档
+
+- README 图标表与输出预览的 `info` 图标改为源码实际的 📝，并注明与 `src/icons.ts` 一一对应。
+- 发布步骤改为真实私有 registry，说明 `publishConfig` 已内置、构建由 `prepublishOnly` / `prepack` 自动执行。
+- 入口 JSDoc 示例改为 `require('@vakao/scripts-utils')`。
+
+### 工程
+
+- `package.json` 新增 `publishConfig.registry`，指向团队私有 npm registry。
+
 ## [0.0.3] - 2026-11-05
 
 ### 修复
