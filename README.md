@@ -69,22 +69,22 @@ console.log(`${colors.bgRed}错误${colors.reset} ${colors.underline}下划线${
 日志（固定时间戳 `HH:MM:SS`，多行消息后续行缩进对齐；图标均为纯 emoji 无 variation selector，渲染对齐稳定）：
 
 ```
-[16:23:45] 💬 信息
+[16:23:45] 📝 信息
 [16:23:45] 🔨 开始构建项目
 [16:23:45] ✅ 编译成功完成
 [16:23:45] 🟡 警告
 [16:23:45] ❌ 无法连接到 npm registry
 [16:23:45] 🔧 执行 pnpm install
-[16:23:45] 💬 第一行
+[16:23:45] 📝 第一行
            第二行
            第三行
 ```
 
-图标全集（11 个 LogType，全部纯 emoji 无 VS）：
+图标全集（11 个 LogType，全部纯 emoji 无 VS，与 `src/icons.ts` 一一对应）：
 
 | 类型    | 图标 | 类型    | 图标 | 类型    | 图标 | 类型   | 图标 |
 | ------- | ---- | ------- | ---- | ------- | ---- | ------ | ---- |
-| info    | 💬   | success | ✅   | warning | 🟡   | error  | ❌   |
+| info    | 📝   | success | ✅   | warning | 🟡   | error  | ❌   |
 | command | 🔧   | build   | 🔨   | publish | 📦   | deploy | 🚀   |
 | check   | 🔍   | copy    | 📋   | clean   | 🧹   |        |      |
 
@@ -137,33 +137,26 @@ console.log(`${colors.bgRed}错误${colors.reset} ${colors.underline}下划线${
 
 ## 发布步骤（私有 NPM 仓库）
 
-1. **配置 `.npmrc`**（仅 `@vakao` scope 走私有源，不影响其他包）：
+1. **配置 `.npmrc`**（仅 `@vakao` scope 走私有源，与 `package.json` 的 `publishConfig` 指向同一个 registry）：
 
    ```ini
-   @vakao:registry=http://your-registry-host:port/
-   //your-registry-host:port/:_authToken=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+   @vakao:registry=https://packages.aliyun.com/676d377c721f4dc7be6ca65a/npm/npm-registry/
+   //packages.aliyun.com/676d377c721f4dc7be6ca65a/npm/npm-registry/:_authToken=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
    ```
 
    > ⚠️ 含 token 的 `.npmrc` **不要提交到 git**，加入 `.gitignore`。
 
-2. **在 package.json 加 `publishConfig`**（`pnpm publish` 自动用此 registry）：
-
-   ```json
-   {
-     "publishConfig": {
-       "registry": "http://your-registry-host:port/"
-     }
-   }
-   ```
+2. **registry 已内置**：`package.json` 的 `publishConfig.registry` 就是上面的地址，`pnpm publish` 会自动使用，无需再手工添加；私有源变更时 `.npmrc` 与 `publishConfig` 两处同步修改。
 
 3. **递增版本号**：编辑 `package.json` 的 `version`（私有 registry 不允许重复版本）
 
-4. **构建并发布**：
+4. **发布**：
 
    ```bash
-   pnpm run build
    pnpm publish --no-git-checks
    ```
+
+   `prepublishOnly` 会依次执行 `lint` → `format:check` → `typecheck` → `test` → `build`，`prepack` 还会在打包前重建 `dist`，因此不需要手动构建。
 
 5. **验证安装**（在另一个项目）：
 
