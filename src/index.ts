@@ -30,7 +30,7 @@
  *   separator,
  *   colors,
  *   icons
- * } = require('./utils');
+ * } = require('@vakao/scripts-utils');
  *
  * // 显示项目横幅
  * showBanner('Vakao UI 构建工具');
